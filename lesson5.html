@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4차시 · 내가 관심 있는 것 찾아보기 — 상상하라! 나의 미래</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .worksheet-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin: 30px 0 20px;
+    }
+
+    /* 메인 + 사이드 구성 */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+
+    .qa-section {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 22px;
+      box-shadow: 3px 3px 0 0 var(--ink);
+      margin-bottom: 20px;
+    }
+    .qa-section .q-label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+    .qa-section .q-num {
+      display: inline-block;
+      width: 28px; height: 28px;
+      background: var(--coral);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      margin-right: 8px;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+    }
+    .qa-section input.q-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--line);
+      border-radius: var(--r-sm);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      background: white;
+    }
+    .qa-section input.q-input:focus { outline: none; border-color: var(--ink); }
+
+    /* 사이드 - 관심 정의 박스 */
+    .sidebar {
+      background: linear-gradient(135deg, #FFE5DA 0%, #FFF2C7 100%);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 22px;
+      box-shadow: 3px 3px 0 0 var(--ink);
+      align-self: start;
+      position: sticky;
+      top: 80px;
+    }
+    @media (max-width: 800px) { .sidebar { position: static; } }
+    .character {
+      text-align: center;
+      font-size: 4rem;
+      margin-bottom: 14px;
+      filter: drop-shadow(2px 2px 0 var(--ink));
+    }
+    .speech-bubble {
+      position: relative;
+      background: white;
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      margin: 0 auto 14px;
+      max-width: 200px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border: 10px solid transparent;
+      border-top-color: var(--ink);
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border: 8px solid transparent;
+      border-top-color: white;
+      z-index: 1;
+    }
+    .sidebar-def {
+      background: white;
+      border-radius: var(--r-sm);
+      padding: 14px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+    }
+    .sidebar-def strong { color: var(--coral-deep); }
+
+    /* 캔버스 */
+    .canvas-wrap {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 24px;
+    }
+    #canvas {
+      display: block;
+      width: 100%;
+      max-width: 700px;
+      aspect-ratio: 4/3;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px;
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      margin-bottom: 14px;
+    }
+    .color-swatch {
+      width: 30px; height: 30px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .color-swatch:hover { transform: scale(1.15); }
+    .color-swatch.active { transform: scale(1.25); box-shadow: 0 0 0 2px var(--gold); }
+    .tool-btn {
+      padding: 7px 12px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+    }
+    .tool-btn.active { background: var(--ink); color: var(--gold); }
+    .brush-size {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-sm);
+    }
+    .brush-size input { width: 90px; }
+
+    /* 갤러리 (보드) */
+    .board {
+      column-count: 3;
+      column-gap: 16px;
+    }
+    @media (max-width: 1000px) { .board { column-count: 2; } }
+    @media (max-width: 600px) { .board { column-count: 1; } }
+    .post-card {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 14px;
+      margin-bottom: 16px;
+      break-inside: avoid;
+      box-shadow: 3px 3px 0 0 var(--ink);
+      position: relative;
+    }
+    .post-card.mine { border-color: var(--coral); box-shadow: 3px 3px 0 0 var(--coral); }
+    .post-card .recent-interest {
+      background: var(--gold);
+      color: var(--ink);
+      border-radius: var(--r-sm);
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .post-card .artwork {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: contain;
+      background: white;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--ink);
+      margin-bottom: 10px;
+    }
+    .post-card .caption {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .post-card .author {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1.5px dashed var(--line);
+      font-size: 0.85rem;
+    }
+    .post-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: var(--r-sm);
+    }
+    .post-actions button:hover { background: var(--line); }
+    .post-actions .liked { color: var(--coral); font-weight: 700; }
+
+    .comments {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1.5px dashed var(--line);
+    }
+    .comment {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      padding: 3px 0;
+      line-height: 1.4;
+    }
+    .comment strong { color: var(--ink); font-size: 0.78rem; }
+    .comment-input { display: flex; gap: 4px; margin-top: 6px; }
+    .comment-input input {
+      flex: 1;
+      padding: 5px 8px;
+      font-size: 0.82rem;
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-sm);
+      font-family: var(--font-body);
+    }
+    .comment-input input:focus { outline: none; border-color: var(--ink); }
+    .comment-input button {
+      padding: 5px 10px;
+      background: var(--ink);
+      color: var(--gold);
+      border: none;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="star"></span><span>상상하라! 나의 미래</span></a>
+      <div class="nav-links">
+        <a href="index.html" data-page="home">홈</a>
+        <a href="lesson1.html" data-page="l1">1차시</a>
+        <a href="lesson2.html" data-page="l2">2차시</a>
+        <a href="lesson3.html" data-page="l3">3차시</a>
+        <a href="lesson4.html" data-page="l4">4차시</a>
+        <a href="lesson5.html" data-page="l5">5차시</a>
+        <a href="lesson6.html" data-page="l6">6차시</a>
+        <a href="lesson7.html" data-page="l7">7차시</a>
+        <span id="nav-user" class="nav-user"></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="crumb">CHAPTER 05 · U · UNITE</div>
+      <h1>친구의 꿈을 응원해요</h1>
+      <p class="subtitle">
+        <span class="stage-tag" style="background:var(--sky-deep);color:white;">생각 연결하기</span>
+        내 관심을 그림으로 표현하고, 친구들의 관심도 둘러보며 마음을 나눠요. 💝
+      </p>
+    </div>
+
+    <!-- 학습지 제목 -->
+    <div class="worksheet-title">내가 관심 있는 것 찾아보기</div>
+
+    <!-- 메인 콘텐츠 + 사이드 -->
+    <div class="main-grid">
+      <div>
+        <!-- Q1. 최근 관심사 -->
+        <div class="qa-section">
+          <div class="q-label">
+            <span class="q-num">1</span>내가 가장 최근에 샀거나 관심 있어 하는 것은 무엇인가요?
+          </div>
+          <input type="text" id="recent-interest" class="q-input" placeholder="짧게 적어요 (예: 만화책, 강아지, 우주여행)" maxlength="40">
+        </div>
+
+        <!-- Q3. 그림 그리기 -->
+        <div class="qa-section">
+          <div class="q-label">
+            <span class="q-num" style="background:var(--sky-deep);">3</span>내가 관심 있는 것들을 모아서 그림을 그려봅시다.
+          </div>
+          <div class="canvas-wrap" style="margin-bottom:0;padding:0;border:none;box-shadow:none;">
+            <div class="toolbar">
+              <span style="font-weight:700;font-size:0.85rem;color:var(--ink-soft);">색:</span>
+              <div class="color-swatch active" style="background:#1B2845;" data-color="#1B2845"></div>
+              <div class="color-swatch" style="background:#E26D5C;" data-color="#E26D5C"></div>
+              <div class="color-swatch" style="background:#E9B44C;" data-color="#E9B44C"></div>
+              <div class="color-swatch" style="background:#7FB7BE;" data-color="#7FB7BE"></div>
+              <div class="color-swatch" style="background:#6B5B95;" data-color="#6B5B95"></div>
+              <div class="color-swatch" style="background:#88C57F;" data-color="#88C57F"></div>
+              <div class="color-swatch" style="background:#F4B5C8;" data-color="#F4B5C8"></div>
+              <div class="color-swatch" style="background:#A07050;" data-color="#A07050"></div>
+              <div class="color-swatch" style="background:#FFFFFF;border-color:#999;" data-color="#FFFFFF"></div>
+              <div class="brush-size">
+                <span style="font-size:0.85rem;">굵기</span>
+                <input type="range" id="brush-size" min="1" max="30" value="5">
+                <span id="brush-num" style="font-size:0.85rem;width:20px;text-align:right;">5</span>
+              </div>
+              <button class="tool-btn active" id="tool-pen" data-tool="pen">🖊 펜</button>
+              <button class="tool-btn" id="tool-eraser" data-tool="eraser">🧹 지우개</button>
+              <button class="tool-btn" id="tool-clear" style="background:var(--coral);color:white;">🗑 전체 지우기</button>
+            </div>
+            <canvas id="canvas" width="800" height="600"></canvas>
+          </div>
+
+          <div style="margin-top:16px;">
+            <label class="form-label">그림 설명 (선택)</label>
+            <textarea id="caption" class="form-textarea" placeholder="내가 무엇을 그렸는지, 왜 좋아하는지 적어요." maxlength="200"></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <button id="save-btn" class="btn btn-primary">💾 저장 (보드에 공유)</button>
+            <button id="download-btn" class="btn btn-gold">⬇ PNG 다운로드</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사이드 -->
+      <div class="sidebar">
+        <div class="character">🍊</div>
+        <div class="speech-bubble">관심이란 무엇일까요?</div>
+        <div class="sidebar-def">
+          <strong>관심</strong><br>
+          : 어떤 것에 주의를 기울이는 마음<br><br>
+          나는 최근에 어떤 것을 주로 생각하고 바라보나요?<br><br>
+          내가 좋아하는 것은 무엇인가요?<br><br>
+          좋아하는 것, 내가 자주 생각하는 것, 더 알아보고 싶어 찾아보는 것들은 <strong>내가 관심을 가진 것</strong>이에요.<br><br>
+          내가 관심 있는 것들을 멋지게 그림 속에 합쳐봅시다.<br><br>
+          사람마다 다 다른 멋진 그림이 완성될 거예요. 🌟
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2. 친구들과 공유 (보드) -->
+    <div class="qa-section" style="background:linear-gradient(135deg, rgba(127,183,190,0.1), rgba(255,255,255,0.5));">
+      <div class="q-label">
+        <span class="q-num" style="background:var(--sky-deep);">2</span>내가 관심 있는 것들을 친구들과 공유해봅시다.
+      </div>
+      <p style="font-size:0.9rem;color:var(--ink-muted);margin-bottom:16px;">
+        같은 학급 친구들이 올린 작품이 보여요. 마음에 드는 작품에 ❤를 눌러 응원하고, 댓글로 마음을 전해요.
+      </p>
+      <div id="board" class="board">
+        <div class="loading" style="column-span:all;"><div class="spinner"></div><p>친구들의 작품을 불러오는 중...</p></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:30px;">
+      <a href="lesson6.html" class="btn btn-gold">6차시로 →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container"><p>상상하라! 나의 미래 · 4차시 내가 관심 있는 것</p></div>
+  </footer>
+
+  <script type="module">
+    import { requireAuth, toast, highlightNav, escapeHtml, timeAgo } from './js/auth.js';
+    import {
+      db, doc, setDoc, getDoc, collection, query, where, onSnapshot,
+      updateDoc, arrayUnion, arrayRemove, serverTimestamp
+    } from './js/firebase-config.js';
+
+    highlightNav('l5');
+    let currentUser = null;
+    let unsubBoard = null;
+    let myPosts = [];  // 학생당 한 작품 (userId 기반)
+
+    // ============ Canvas ============
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let last = null;
+    let color = '#1B2845';
+    let brushSize = 5;
+    let tool = 'pen';
+
+    function clearCanvas() {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    clearCanvas();
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      let cx, cy;
+      if (e.touches && e.touches.length > 0) {
+        cx = e.touches[0].clientX; cy = e.touches[0].clientY;
+      } else { cx = e.clientX; cy = e.clientY; }
+      return { x: (cx - rect.left) * scaleX, y: (cy - rect.top) * scaleY };
+    }
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true; last = getPos(e);
+      ctx.beginPath();
+      ctx.arc(last.x, last.y, brushSize / 2, 0, Math.PI * 2);
+      ctx.fillStyle = tool === 'eraser' ? '#FFFFFF' : color;
+      ctx.fill();
+    }
+    function draw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const p = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.stroke();
+      last = p;
+    }
+    function endDraw() { drawing = false; }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', endDraw);
+
+    document.querySelectorAll('.color-swatch').forEach(s => {
+      s.addEventListener('click', () => {
+        document.querySelectorAll('.color-swatch').forEach(c => c.classList.remove('active'));
+        s.classList.add('active');
+        color = s.dataset.color;
+        setTool('pen');
+      });
+    });
+    document.getElementById('brush-size').addEventListener('input', (e) => {
+      brushSize = parseInt(e.target.value);
+      document.getElementById('brush-num').textContent = brushSize;
+    });
+    function setTool(t) {
+      tool = t;
+      document.getElementById('tool-pen').classList.toggle('active', t === 'pen');
+      document.getElementById('tool-eraser').classList.toggle('active', t === 'eraser');
+    }
+    document.getElementById('tool-pen').addEventListener('click', () => setTool('pen'));
+    document.getElementById('tool-eraser').addEventListener('click', () => setTool('eraser'));
+    document.getElementById('tool-clear').addEventListener('click', () => {
+      if (confirm('정말 모두 지우시겠어요?')) clearCanvas();
+    });
+    document.getElementById('download-btn').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.download = `관심그림_${currentUser?.name || '나'}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+
+    // ============ 인증 & 데이터 로드 ============
+    requireAuth(async (user) => {
+      currentUser = user;
+      // 기존 작품 불러오기
+      try {
+        const snap = await getDoc(doc(db, 'lesson4_interests', user.userId));
+        if (snap.exists()) {
+          const d = snap.data();
+          if (d.recentInterest) document.getElementById('recent-interest').value = d.recentInterest;
+          if (d.caption) document.getElementById('caption').value = d.caption;
+          if (d.artwork) {
+            const img = new Image();
+            img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            img.src = d.artwork;
+          }
+        }
+      } catch (e) { console.warn(e); }
+      subscribeBoard();
+    });
+
+    // ============ 저장 ============
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const recentInterest = document.getElementById('recent-interest').value.trim();
+      const caption = document.getElementById('caption').value.trim();
+      const artwork = canvas.toDataURL('image/jpeg', 0.55);
+      const sizeKB = Math.round(artwork.length / 1024);
+      if (sizeKB > 900) {
+        toast('그림이 너무 커요. 더 단순하게 그려주세요.'); return;
+      }
+      try {
+        await setDoc(doc(db, 'lesson4_interests', currentUser.userId), {
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          classCode: currentUser.classCode,
+          recentInterest, caption, artwork,
+          likes: [], comments: [],   // 신규 생성 시
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast(`보드에 공유되었어요! (${sizeKB}KB) 💝`);
+      } catch (e) {
+        console.error(e);
+        toast('저장 실패. Firebase 설정과 그림 크기를 확인해주세요.');
+      }
+    });
+
+    // ============ 보드 실시간 ============
+    function subscribeBoard() {
+      if (unsubBoard) unsubBoard();
+      const q = query(
+        collection(db, 'lesson4_interests'),
+        where('classCode', '==', currentUser.classCode)
+      );
+      unsubBoard = onSnapshot(q, (snap) => {
+        const items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        // 정렬: 최근 업데이트 순
+        items.sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0));
+        renderBoard(items);
+      }, (err) => {
+        console.error(err);
+        document.getElementById('board').innerHTML =
+          '<p class="loading" style="column-span:all;">보드 불러오기 실패. Firebase 설정을 확인해주세요.</p>';
+      });
+    }
+
+    function renderBoard(items) {
+      const board = document.getElementById('board');
+      if (items.length === 0) {
+        board.innerHTML = '<p class="loading" style="column-span:all;">아직 공유된 작품이 없어요. 첫 번째 작품을 올려보세요! 🎨</p>';
+        return;
+      }
+      board.innerHTML = items.map(p => {
+        const liked = (p.likes || []).includes(currentUser.userId);
+        const mine = p.userId === currentUser.userId;
+        return `
+          <div class="post-card ${mine ? 'mine' : ''}" data-id="${p.id}">
+            ${p.recentInterest ? `<div class="recent-interest">🍊 ${escapeHtml(p.recentInterest)}</div>` : ''}
+            ${p.artwork ? `<img src="${p.artwork}" class="artwork" alt="">` : ''}
+            ${p.caption ? `<div class="caption">${escapeHtml(p.caption)}</div>` : ''}
+            <div class="author">👤 ${escapeHtml(p.userName)} · ${timeAgo(p.updatedAt)}</div>
+            <div class="post-actions">
+              <button class="like-btn ${liked ? 'liked' : ''}" data-id="${p.id}">${liked ? '❤️' : '🤍'} ${(p.likes || []).length}</button>
+              <button class="toggle-comments-btn" data-id="${p.id}">💬 ${(p.comments || []).length}</button>
+            </div>
+            <div class="comments hidden" id="comments-${p.id}">
+              ${(p.comments || []).map(c => `
+                <div class="comment"><strong>${escapeHtml(c.userName)}:</strong> ${escapeHtml(c.text)}</div>
+              `).join('')}
+              <div class="comment-input">
+                <input type="text" placeholder="응원 댓글 남기기..." maxlength="50">
+                <button type="button" class="add-comment-btn" data-id="${p.id}">전송</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      board.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', () => toggleLike(btn.dataset.id));
+      });
+      board.querySelectorAll('.toggle-comments-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('comments-' + btn.dataset.id).classList.toggle('hidden');
+        });
+      });
+      board.querySelectorAll('.add-comment-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const input = btn.previousElementSibling;
+          const text = input.value.trim();
+          if (!text) return;
+          addComment(btn.dataset.id, text);
+          input.value = '';
+        });
+      });
+      board.querySelectorAll('.comment-input input').forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); input.nextElementSibling.click(); }
+        });
+      });
+    }
+
+    async function toggleLike(postId) {
+      try {
+        // 현재 좋아요 상태 확인
+        const snap = await getDoc(doc(db, 'lesson4_interests', postId));
+        if (!snap.exists()) return;
+        const liked = (snap.data().likes || []).includes(currentUser.userId);
+        await updateDoc(doc(db, 'lesson4_interests', postId), {
+          likes: liked ? arrayRemove(currentUser.userId) : arrayUnion(currentUser.userId)
+        });
+      } catch (e) {
+        console.error(e);
+        toast('좋아요 실패.');
+      }
+    }
+
+    async function addComment(postId, text) {
+      try {
+        await updateDoc(doc(db, 'lesson4_interests', postId), {
+          comments: arrayUnion({
+            userId: currentUser.userId,
+            userName: currentUser.name,
+            text, createdAt: Date.now()
+          })
+        });
+      } catch (e) {
+        console.error(e);
+        toast('댓글 실패.');
+      }
+    }
+
+    window.addEventListener('beforeunload', () => { if (unsubBoard) unsubBoard(); });
+  </script>
+</body>
+</html>

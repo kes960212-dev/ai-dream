@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3차시 · 나의 흥미와 적성 살펴보기 — 상상하라! 나의 미래</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .worksheet-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin: 30px 0 20px;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 700px) { .top-row { grid-template-columns: 1fr; } }
+    .intro-text {
+      padding: 16px 20px;
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-md);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .definition {
+      padding: 18px 22px;
+      background: linear-gradient(135deg, rgba(233,180,76,0.18), rgba(233,180,76,0.05));
+      border: 2px solid var(--gold-deep);
+      border-radius: var(--r-md);
+      font-size: 0.95rem;
+      line-height: 1.9;
+    }
+    .definition strong { color: var(--ink); font-family: var(--font-display); font-size: 1.05rem; }
+    .definition .fill {
+      display: inline-block;
+      padding: 2px 12px;
+      background: white;
+      border: 1.5px solid var(--gold-deep);
+      border-radius: var(--r-sm);
+      margin: 0 2px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 10px 22px;
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .tab.active { background: var(--ink); color: var(--gold); }
+
+    /* 4분면 + 가운데 원 그리드 */
+    .johari-board {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      min-height: 600px;
+    }
+    @media (max-width: 700px) {
+      .johari-board {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        min-height: auto;
+      }
+    }
+    .quadrant {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 20px;
+      box-shadow: 3px 3px 0 0 var(--ink);
+      display: flex;
+      flex-direction: column;
+      min-height: 240px;
+    }
+    .quadrant.blind { background: linear-gradient(135deg, rgba(226,109,92,0.08), rgba(255,255,255,0.5)); }
+    .quadrant.unknown { background: linear-gradient(135deg, rgba(127,183,190,0.1), rgba(255,255,255,0.5)); }
+
+    .q-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: var(--ink);
+      text-align: right;
+    }
+    .quadrant.known .q-title, .quadrant.hidden .q-title { text-align: left; }
+    .q-sub {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+    }
+    .quadrant.known .q-sub, .quadrant.hidden .q-sub { text-align: left; }
+    .quadrant.blind .q-sub, .quadrant.unknown .q-sub { text-align: right; }
+
+    .chip-input {
+      display: flex; gap: 6px; margin-bottom: 10px;
+    }
+    .chip-input input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid var(--line);
+      border-radius: var(--r-sm);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+    .chip-input input:focus { outline: none; border-color: var(--ink); }
+    .chip-input button {
+      padding: 8px 14px;
+      background: var(--ink);
+      color: var(--gold);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex: 1;
+    }
+    .chip {
+      padding: 6px 12px;
+      background: var(--gold);
+      color: var(--ink);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid var(--ink);
+    }
+    .chip .remove {
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.6;
+    }
+    .chip .remove:hover { opacity: 1; }
+    .chip.fb {
+      background: var(--coral);
+      color: white;
+      border-color: var(--coral-deep);
+    }
+    .chip.fb .from { opacity: 0.75; font-size: 0.7rem; margin-left: 4px; }
+
+    /* 중앙 그림 캔버스 */
+    .center-circle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 190px;
+      height: 190px;
+      background: var(--bg-elevated);
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 4px 4px 0 0 var(--ink);
+      z-index: 10;
+      overflow: hidden;
+    }
+    @media (max-width: 700px) {
+      .center-circle {
+        position: relative; top: auto; left: auto; transform: none;
+        margin: 12px auto;
+      }
+    }
+    .center-circle canvas {
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      touch-action: none;
+      background: white;
+      border-radius: 50%;
+    }
+    .center-label {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      text-align: center;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+    .center-tools {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .center-tools button {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border: 1.5px solid var(--ink);
+      background: var(--bg-elevated);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-weight: 700;
+    }
+    .center-tools button.active { background: var(--ink); color: var(--gold); }
+    .color-mini {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--ink);
+      cursor: pointer;
+    }
+    .color-mini.active { box-shadow: 0 0 0 2px var(--gold); }
+
+    /* 친구 카드 */
+    .friend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .friend-card {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      box-shadow: 3px 3px 0 0 var(--ink);
+    }
+    .friend-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 0 var(--ink);
+    }
+    .friend-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--grad-warm);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    .modal-overlay { padding: 20px; }
+    .modal { max-width: 540px; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="star"></span><span>상상하라! 나의 미래</span></a>
+      <div class="nav-links">
+        <a href="index.html" data-page="home">홈</a>
+        <a href="lesson1.html" data-page="l1">1차시</a>
+        <a href="lesson2.html" data-page="l2">2차시</a>
+        <a href="lesson3.html" data-page="l3">3차시</a>
+        <a href="lesson4.html" data-page="l4">4차시</a>
+        <a href="lesson5.html" data-page="l5">5차시</a>
+        <a href="lesson6.html" data-page="l6">6차시</a>
+        <a href="lesson7.html" data-page="l7">7차시</a>
+        <span id="nav-user" class="nav-user"></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="crumb">CHAPTER 04 · R · RECOGNIZE</div>
+      <h1>나의 강점을 발견해요</h1>
+      <p class="subtitle">
+        <span class="stage-tag" style="background:var(--gold);color:var(--ink);">핵심 파악하기</span>
+        조하리의 창으로 나를 살펴보고, 친구의 페이지에 가서 친구의 강점을 발견해줍시다.
+      </p>
+    </div>
+
+    <!-- 학습지 제목 -->
+    <div class="worksheet-title">나의 흥미와 적성 살펴보기</div>
+
+    <!-- 안내 + 정의 -->
+    <div class="top-row">
+      <div class="intro-text">
+        💭 내가 잘하는 것, 내가 좋아하는 것은 무엇일까?<br>
+        남이 모르는, 나만 아는, 또는 나만 몰랐던!<br>
+        <strong>나의 흥미와 적성을 찾아보자!</strong>
+      </div>
+      <div class="definition">
+        <strong>흥미</strong> = 내가 <span class="fill">관심</span>을 느끼거나 <span class="fill">마음</span>을 두는 것<br>
+        <strong>적성</strong> = 어떤 일에 잘 <span class="fill">맞는</span> 성격이나 <span class="fill">능력</span>
+      </div>
+    </div>
+
+    <!-- 탭 -->
+    <div class="tabs">
+      <button class="tab active" data-tab="mine">🪞 내 흥미·적성 찾기</button>
+      <button class="tab" data-tab="friends">👥 친구의 강점 발견해주기</button>
+    </div>
+
+    <!-- 내 창 -->
+    <div id="tab-mine" class="tab-pane">
+      <p style="margin-bottom:14px;color:var(--ink-soft);font-size:0.9rem;">
+        💡 각 칸에 내용을 추가하고, 가운데 원에는 나를 상징하는 그림을 그려요.
+        <strong>'친구가 알아주는 나'</strong>는 친구들이 적어줘요.
+      </p>
+
+      <div class="johari-board">
+        <!-- 1. 나도 알고, 다른 사람도 아는 -->
+        <div class="quadrant known" data-q="known">
+          <div class="q-title">나도 알고, 다른 사람도 아는</div>
+          <div class="q-sub">나의 흥미와 적성</div>
+          <div class="chip-input">
+            <input type="text" placeholder="예: 그림 그리기, 운동" maxlength="30">
+            <button type="button" data-add="known">+</button>
+          </div>
+          <div class="chips" data-chips="known"></div>
+        </div>
+
+        <!-- 2. 나는 모르는, 다른 사람이 알아주는 -->
+        <div class="quadrant blind" data-q="blind">
+          <div class="q-title">나는 모르는, 다른 사람이 알아주는</div>
+          <div class="q-sub">나의 흥미와 적성 (친구들의 응원)</div>
+          <div class="chips" data-chips="blind" id="blind-chips" style="margin-top:auto;"></div>
+          <div id="blind-empty" style="color:var(--ink-muted);font-size:0.85rem;text-align:center;margin:auto 0;">
+            친구들이 응원을 적어주면<br>여기에 표시돼요 💝
+          </div>
+        </div>
+
+        <!-- 3. 나만 알고, 다른 사람은 모르는 -->
+        <div class="quadrant hidden-q" data-q="hidden">
+          <div class="q-title">나만 알고, 다른 사람은 모르는</div>
+          <div class="q-sub">나의 흥미와 적성</div>
+          <div class="chip-input">
+            <input type="text" placeholder="예: 사실 노래 부르기가 좋아" maxlength="30">
+            <button type="button" data-add="hidden">+</button>
+          </div>
+          <div class="chips" data-chips="hidden"></div>
+        </div>
+
+        <!-- 4. 나도, 다른 사람도 모르는 -->
+        <div class="quadrant unknown" data-q="unknown">
+          <div class="q-title">나도, 다른 사람들도 모르는</div>
+          <div class="q-sub">나의 흥미와 적성 (새로 도전해 볼 것)</div>
+          <div class="chip-input">
+            <input type="text" placeholder="예: 플라이요가, 프랑스요리..." maxlength="30">
+            <button type="button" data-add="unknown">+</button>
+          </div>
+          <div class="chips" data-chips="unknown"></div>
+        </div>
+
+        <!-- 중앙 원 (캔버스) -->
+        <div class="center-circle">
+          <canvas id="symbol-canvas" width="380" height="380"></canvas>
+        </div>
+      </div>
+
+      <!-- 중앙 캔버스 도구 -->
+      <div style="text-align:center;margin-top:20px;">
+        <div class="center-label">🎨 나를 상징하는 것을 그려요</div>
+        <div class="center-tools">
+          <div class="color-mini active" style="background:#1B2845;" data-color="#1B2845"></div>
+          <div class="color-mini" style="background:#E26D5C;" data-color="#E26D5C"></div>
+          <div class="color-mini" style="background:#E9B44C;" data-color="#E9B44C"></div>
+          <div class="color-mini" style="background:#7FB7BE;" data-color="#7FB7BE"></div>
+          <div class="color-mini" style="background:#6B5B95;" data-color="#6B5B95"></div>
+          <div class="color-mini" style="background:#88C57F;" data-color="#88C57F"></div>
+          <div class="color-mini" style="background:#FFFFFF;border-color:#999;" data-color="#FFFFFF"></div>
+          <button id="symbol-pen" class="active">🖊</button>
+          <button id="symbol-eraser">🧹</button>
+          <button id="symbol-clear">🗑</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;">
+        <button id="save-mine" class="btn btn-primary">저장하기 💾</button>
+        <a href="lesson5.html" class="btn btn-gold">5차시로 →</a>
+      </div>
+    </div>
+
+    <!-- 친구 응원 탭 -->
+    <div id="tab-friends" class="tab-pane hidden">
+      <p style="margin-bottom:8px;color:var(--ink-soft);">
+        💡 같은 학급 친구들을 클릭해서, 그 친구가 미처 몰랐을 강점을 적어주세요.
+      </p>
+      <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:20px;">
+        ⚠️ <strong>긍정적인 점</strong>만 적어요. 외모/키 같은 외형 평가는 적지 않아요.
+      </p>
+      <div class="friend-grid" id="friend-grid">
+        <div class="loading" style="grid-column:1/-1;"><div class="spinner"></div><p>친구 목록을 불러오는 중...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 친구 피드백 모달 -->
+  <div id="feedback-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="fb-friend-name">친구에게 응원 보내기</h2>
+      <p class="modal-desc">이 친구의 어떤 점이 멋진가요? 친구가 잘하는 것, 좋은 점을 적어주세요.</p>
+      <div id="existing-feedback" style="margin-bottom:16px;"></div>
+      <input type="text" id="fb-message" class="form-input" placeholder="예: 항상 친구들 이야기를 잘 들어줘요!" maxlength="50">
+      <p style="font-size:0.8rem;color:var(--ink-muted);margin:8px 0 16px;">짧고 따뜻하게! (최대 50자)</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button id="fb-cancel" class="btn btn-ghost btn-sm">닫기</button>
+        <button id="fb-send" class="btn btn-primary btn-sm">응원 보내기 💌</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container"><p>상상하라! 나의 미래 · 3차시 흥미와 적성</p></div>
+  </footer>
+
+  <script type="module">
+    import { requireAuth, toast, highlightNav, escapeHtml } from './js/auth.js';
+    import {
+      db, doc, setDoc, getDoc, collection, query, where, getDocs,
+      arrayUnion, onSnapshot, serverTimestamp
+    } from './js/firebase-config.js';
+
+    highlightNav('l4');
+    let currentUser = null;
+    let myData = { known: [], hidden: [], unknown: [], feedbacks: [], symbolImage: '' };
+    let currentFriendId = null;
+    let unsubMyData = null;
+
+    // ============ 중앙 캔버스 ============
+    const canvas = document.getElementById('symbol-canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let last = null;
+    let symbolColor = '#1B2845';
+    let symbolTool = 'pen';
+
+    function clearSymbol() {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    clearSymbol();
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      let cx, cy;
+      if (e.touches && e.touches.length > 0) {
+        cx = e.touches[0].clientX; cy = e.touches[0].clientY;
+      } else { cx = e.clientX; cy = e.clientY; }
+      return { x: (cx - rect.left) * scaleX, y: (cy - rect.top) * scaleY };
+    }
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true; last = getPos(e);
+      ctx.beginPath();
+      ctx.arc(last.x, last.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = symbolTool === 'eraser' ? '#FFFFFF' : symbolColor;
+      ctx.fill();
+    }
+    function draw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const p = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = symbolTool === 'eraser' ? '#FFFFFF' : symbolColor;
+      ctx.lineWidth = symbolTool === 'eraser' ? 16 : 6;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.stroke();
+      last = p;
+    }
+    function endDraw() { drawing = false; }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', endDraw);
+
+    document.querySelectorAll('.color-mini').forEach(c => {
+      c.addEventListener('click', () => {
+        document.querySelectorAll('.color-mini').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        symbolColor = c.dataset.color;
+        setSymbolTool('pen');
+      });
+    });
+    function setSymbolTool(t) {
+      symbolTool = t;
+      document.getElementById('symbol-pen').classList.toggle('active', t === 'pen');
+      document.getElementById('symbol-eraser').classList.toggle('active', t === 'eraser');
+    }
+    document.getElementById('symbol-pen').addEventListener('click', () => setSymbolTool('pen'));
+    document.getElementById('symbol-eraser').addEventListener('click', () => setSymbolTool('eraser'));
+    document.getElementById('symbol-clear').addEventListener('click', () => {
+      if (confirm('그림을 모두 지울까요?')) clearSymbol();
+    });
+
+    // ============ 인증 + 데이터 로드 ============
+    requireAuth(async (user) => {
+      currentUser = user;
+      unsubMyData = onSnapshot(doc(db, 'lesson3_johari', user.userId), (snap) => {
+        if (snap.exists()) {
+          const d = snap.data();
+          myData = { known: [], hidden: [], unknown: [], feedbacks: [], symbolImage: '', ...d };
+          // 첫 로드 시 캔버스 그림 복원
+          if (d.symbolImage && !canvas.dataset.loaded) {
+            const img = new Image();
+            img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            img.src = d.symbolImage;
+            canvas.dataset.loaded = '1';
+          }
+        }
+        renderChips();
+        renderBlind();
+      });
+    });
+
+    // ============ 탭 ============
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+        tab.classList.add('active');
+        document.getElementById(`tab-${tab.dataset.tab}`).classList.remove('hidden');
+        if (tab.dataset.tab === 'friends') loadFriends();
+      });
+    });
+
+    // ============ Chips ============
+    document.querySelectorAll('button[data-add]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.add;
+        const input = btn.parentElement.querySelector('input');
+        const val = input.value.trim();
+        if (!val) return;
+        if (!myData[key]) myData[key] = [];
+        if (myData[key].includes(val)) {
+          toast('이미 추가된 내용이에요.'); return;
+        }
+        myData[key].push(val);
+        input.value = '';
+        renderChips();
+      });
+    });
+    document.querySelectorAll('.chip-input input').forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); input.parentElement.querySelector('button').click(); }
+      });
+    });
+
+    function renderChips() {
+      ['known','hidden','unknown'].forEach(key => {
+        const c = document.querySelector(`[data-chips="${key}"]`);
+        if (!c) return;
+        const items = myData[key] || [];
+        c.innerHTML = items.map((item, idx) => `
+          <span class="chip">${escapeHtml(item)} <span class="remove" data-key="${key}" data-idx="${idx}">×</span></span>
+        `).join('');
+        c.querySelectorAll('.remove').forEach(el => {
+          el.addEventListener('click', () => {
+            const k = el.dataset.key;
+            const i = parseInt(el.dataset.idx);
+            myData[k].splice(i, 1);
+            renderChips();
+          });
+        });
+      });
+    }
+
+    function renderBlind() {
+      const c = document.getElementById('blind-chips');
+      const empty = document.getElementById('blind-empty');
+      const fbs = myData.feedbacks || [];
+      if (fbs.length === 0) {
+        c.innerHTML = ''; empty.style.display = ''; return;
+      }
+      empty.style.display = 'none';
+      c.innerHTML = fbs.map(fb => `
+        <span class="chip fb">${escapeHtml(fb.message)} <span class="from">- ${escapeHtml(fb.fromName)}</span></span>
+      `).join('');
+    }
+
+    // ============ 저장 ============
+    document.getElementById('save-mine').addEventListener('click', async () => {
+      if (!currentUser) return;
+      // 캔버스를 base64로 저장 (작은 사이즈)
+      const symbolImage = canvas.toDataURL('image/jpeg', 0.7);
+      try {
+        await setDoc(doc(db, 'lesson3_johari', currentUser.userId), {
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          classCode: currentUser.classCode,
+          known: myData.known || [],
+          hidden: myData.hidden || [],
+          unknown: myData.unknown || [],
+          symbolImage,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast('저장되었어요! 🎉');
+      } catch (e) {
+        console.error(e);
+        toast('저장 실패. Firebase 설정을 확인해주세요.');
+      }
+    });
+
+    // ============ 친구 목록 ============
+    async function loadFriends() {
+      const grid = document.getElementById('friend-grid');
+      try {
+        const q = query(collection(db, 'users'), where('classCode', '==', currentUser.classCode));
+        const snap = await getDocs(q);
+        const friends = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.userId !== currentUser.userId) friends.push(data);
+        });
+        if (friends.length === 0) {
+          grid.innerHTML = '<p class="loading" style="grid-column:1/-1;">아직 같은 학급 코드 친구가 없어요. 친구가 가입하기를 기다려주세요!</p>';
+          return;
+        }
+        friends.sort((a,b) => (parseInt(a.number)||0) - (parseInt(b.number)||0));
+        grid.innerHTML = friends.map(f => `
+          <div class="friend-card" data-uid="${f.userId}" data-name="${escapeHtml(f.name)}">
+            <div class="friend-avatar">${escapeHtml(f.name.charAt(0))}</div>
+            <div style="font-weight:700;">${escapeHtml(f.name)}</div>
+            <div style="font-size:0.8rem;color:var(--ink-muted);">${f.number}번</div>
+          </div>
+        `).join('');
+        grid.querySelectorAll('.friend-card').forEach(c => {
+          c.addEventListener('click', () => openFeedback(c.dataset.uid, c.dataset.name));
+        });
+      } catch (e) {
+        console.error(e);
+        grid.innerHTML = '<p class="loading" style="grid-column:1/-1;">친구 목록을 불러올 수 없어요. Firebase 설정을 확인해주세요.</p>';
+      }
+    }
+
+    async function openFeedback(uid, name) {
+      currentFriendId = uid;
+      document.getElementById('fb-friend-name').textContent = `${name}에게 응원 보내기`;
+      document.getElementById('fb-message').value = '';
+      const existingBox = document.getElementById('existing-feedback');
+      existingBox.innerHTML = '';
+      try {
+        const snap = await getDoc(doc(db, 'lesson3_johari', uid));
+        if (snap.exists()) {
+          const fbs = snap.data().feedbacks || [];
+          const mine = fbs.filter(f => f.from === currentUser.userId);
+          if (mine.length > 0) {
+            existingBox.innerHTML = `
+              <div style="background:var(--mist);padding:10px 14px;border-radius:var(--r-md);font-size:0.9rem;">
+                <strong>이미 보낸 응원:</strong><br>
+                ${mine.map(m => `· "${escapeHtml(m.message)}"`).join('<br>')}
+              </div>`;
+          }
+        }
+      } catch (e) { console.warn(e); }
+      document.getElementById('feedback-modal').classList.remove('hidden');
+    }
+    document.getElementById('fb-cancel').addEventListener('click', () => {
+      document.getElementById('feedback-modal').classList.add('hidden');
+    });
+    document.getElementById('fb-send').addEventListener('click', async () => {
+      const msg = document.getElementById('fb-message').value.trim();
+      if (!msg) return toast('메시지를 입력해주세요!');
+      try {
+        await setDoc(doc(db, 'lesson3_johari', currentFriendId), {
+          feedbacks: arrayUnion({
+            from: currentUser.userId,
+            fromName: currentUser.name,
+            message: msg,
+            createdAt: Date.now()
+          })
+        }, { merge: true });
+        toast('응원이 전달되었어요! 💝');
+        document.getElementById('feedback-modal').classList.add('hidden');
+      } catch (e) {
+        console.error(e);
+        toast('전송 실패. Firebase 설정을 확인해주세요.');
+      }
+    });
+
+    window.addEventListener('beforeunload', () => { if (unsubMyData) unsubMyData(); });
+  </script>
+</body>
+</html>
