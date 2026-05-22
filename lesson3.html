@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3차시 · 변화하는 직업 세계 탐구 — 상상하라! 나의 미래</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .worksheet-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin: 30px 0 20px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--ink);
+    }
+    .worksheet-title .name-slot {
+      display: inline-block;
+      min-width: 120px;
+      padding: 0 12px;
+      color: var(--coral);
+      border-bottom: 3px solid var(--coral);
+    }
+
+    .think-box {
+      background: linear-gradient(135deg, #1B2845 0%, #3A4A6B 100%);
+      color: var(--bg);
+      border-radius: var(--r-lg);
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .think-box h3 { color: var(--gold); margin-bottom: 12px; }
+    .think-box p { line-height: 1.8; font-size: 1rem; }
+    .think-box::before {
+      content: '💭';
+      position: absolute;
+      top: -12px; left: 24px;
+      font-size: 1.8rem;
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 50%;
+    }
+
+    .ai-info-box {
+      background: linear-gradient(135deg, rgba(107,91,149,0.15), rgba(127,183,190,0.1));
+      border: 2px dashed var(--plum);
+      border-radius: var(--r-md);
+      padding: 18px 22px;
+      margin-bottom: 28px;
+    }
+    .ai-info-box h4 { color: var(--plum); margin-bottom: 10px; font-family: var(--font-display); font-size: 1.05rem; }
+    .ai-info-box a {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 4px 12px;
+      background: var(--plum);
+      color: white;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .ai-info-box a:hover { text-decoration: none; transform: translateY(-1px); }
+
+    .activity-section {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 28px;
+    }
+    .activity-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px dashed var(--line);
+    }
+    .activity-badge {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      border: 2px solid var(--ink);
+    }
+    .activity-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    .activity-sub {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+    }
+    .act-disappearing .activity-badge { background: #FDE5E0; }
+    .act-disappearing .activity-title { color: var(--coral-deep); }
+    .act-remaining .activity-badge { background: #E7F4E5; }
+    .act-remaining .activity-title { color: #4A7A3C; }
+    .act-emerging .activity-badge { background: #FFF2C7; }
+    .act-emerging .activity-title { color: var(--gold-deep); }
+
+    .add-form {
+      background: rgba(0,0,0,0.025);
+      border: 1.5px dashed var(--line);
+      border-radius: var(--r-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .add-form input, .add-form textarea {
+      width: 100%;
+      padding: 9px 12px;
+      margin-bottom: 8px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-sm);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+    }
+    .add-form input:focus, .add-form textarea:focus { outline: none; border-color: var(--ink); }
+    .add-form textarea { min-height: 60px; resize: vertical; }
+    .add-form .form-action { display: flex; justify-content: flex-end; gap: 8px; }
+    .add-form button {
+      padding: 7px 14px;
+      background: var(--ink);
+      color: var(--gold);
+      border: none;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .item-card {
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 12px;
+      box-shadow: 3px 3px 0 0 var(--ink);
+      position: relative;
+    }
+    .item-card .item-img {
+      width: 100%; aspect-ratio: 1/1; object-fit: cover;
+      background: var(--mist); border-radius: var(--r-sm); margin-bottom: 8px;
+    }
+    .item-card .img-placeholder {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg, rgba(107,91,149,0.15), rgba(127,183,190,0.1));
+      border-radius: var(--r-sm); margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; color: var(--ink-muted);
+    }
+    .item-card .item-name {
+      font-family: var(--font-display); font-size: 1rem; margin-bottom: 4px;
+    }
+    .item-card .item-work {
+      font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 4px; font-weight: 700;
+    }
+    .item-card .item-reason {
+      font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; white-space: pre-wrap;
+    }
+    .item-card .item-delete {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(27,40,69,0.85); color: var(--gold);
+      border: none; width: 24px; height: 24px; border-radius: 50%;
+      cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0;
+    }
+    .item-card .item-delete:hover { background: var(--coral); color: white; }
+
+    .empty-msg {
+      text-align: center; padding: 20px;
+      color: var(--ink-muted); font-size: 0.9rem;
+      background: var(--bg); border-radius: var(--r-md);
+      border: 1.5px dashed var(--line);
+    }
+
+    /* ===== 학급 통합 3분면 보드 ===== */
+    .class-board-section {
+      background: linear-gradient(180deg, rgba(27,40,69,0.04), rgba(27,40,69,0.01));
+      border: 2px solid var(--ink);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 28px;
+    }
+    .class-board-section h2 { margin-bottom: 6px; }
+    .class-board-section .lead {
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    .class-board-section .student-count {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .three-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 900px) { .three-column { grid-template-columns: 1fr; } }
+
+    .column {
+      background: var(--bg-elevated);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 18px;
+      min-height: 350px;
+      max-height: 700px;
+      overflow-y: auto;
+      box-shadow: 4px 4px 0 0 var(--ink);
+    }
+    .column.col-disappearing {
+      background: linear-gradient(180deg, #FDE5E0 0%, #FFFDF8 30%);
+    }
+    .column.col-remaining {
+      background: linear-gradient(180deg, #E7F4E5 0%, #FFFDF8 30%);
+    }
+    .column.col-emerging {
+      background: linear-gradient(180deg, #FFF2C7 0%, #FFFDF8 30%);
+    }
+    .column h3 {
+      text-align: center;
+      font-family: var(--font-display);
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed var(--ink);
+      font-size: 1.1rem;
+      position: sticky;
+      top: -18px;
+      background: inherit;
+      z-index: 1;
+      margin: -18px -18px 12px;
+      padding: 18px 18px 10px;
+    }
+    .column .count-badge {
+      display: inline-block;
+      background: var(--ink);
+      color: var(--gold);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+    .col-disappearing h3 { color: var(--coral-deep); }
+    .col-remaining h3 { color: #4A7A3C; }
+    .col-emerging h3 { color: var(--gold-deep); }
+
+    .aggregated-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .agg-item {
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      box-shadow: 2px 2px 0 0 var(--ink);
+    }
+    .agg-item.mine { border-color: var(--coral); box-shadow: 2px 2px 0 0 var(--coral); }
+    .agg-item .agg-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: var(--r-sm);
+      margin-bottom: 8px;
+      background: var(--mist);
+    }
+    .agg-item .agg-name {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .agg-item .agg-work {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .agg-item .agg-reason {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-bottom: 6px;
+      white-space: pre-wrap;
+    }
+    .agg-item .agg-author {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      font-weight: 700;
+      text-align: right;
+      border-top: 1px dashed var(--line);
+      padding-top: 4px;
+    }
+    .agg-item.mine .agg-author { color: var(--coral); }
+
+    /* ===== 공통점 찾기 섹션 ===== */
+    .common-section {
+      background: linear-gradient(135deg, #FFF2C7 0%, #FDE5E0 100%);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .common-section::before {
+      content: '💡';
+      position: absolute;
+      top: -22px; left: 22px;
+      font-size: 2rem;
+      background: var(--bg);
+      padding: 4px 10px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+    }
+    .common-section h2 {
+      margin-bottom: 8px;
+      padding-top: 8px;
+    }
+    .common-section .lead {
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .common-input {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      background: white;
+      resize: vertical;
+    }
+    .common-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(233,180,76,0.3); }
+
+    .friends-features {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 2px dashed var(--ink);
+    }
+    .friends-features h3 {
+      margin-bottom: 12px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .feature-card {
+      background: var(--bg-elevated);
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 14px;
+      box-shadow: 2px 2px 0 0 var(--ink);
+    }
+    .feature-card .friend-name {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--coral-deep);
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--line);
+    }
+    .feature-card .content {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="star"></span><span>상상하라! 나의 미래</span></a>
+      <div class="nav-links">
+        <a href="index.html" data-page="home">홈</a>
+        <a href="lesson1.html" data-page="l1">1차시</a>
+        <a href="lesson2.html" data-page="l2">2차시</a>
+        <a href="lesson3.html" data-page="l3">3차시</a>
+        <a href="lesson4.html" data-page="l4">4차시</a>
+        <a href="lesson5.html" data-page="l5">5차시</a>
+        <a href="lesson6.html" data-page="l6">6차시</a>
+        <a href="lesson7.html" data-page="l7">7차시</a>
+        <span id="nav-user" class="nav-user"></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="crumb">CHAPTER 03 · R · RECOGNIZE</div>
+      <h1>변화하는 직업 세계 탐구</h1>
+      <p class="subtitle">
+        <span class="stage-tag" style="background:var(--gold);color:var(--ink);">핵심 파악하기</span>
+        세상이 빠르게 변하면서 직업의 모습도 달라지고 있어요. 사라질 직업, 남을 직업, 새로 생길 직업을 상상하며 공통점을 찾아봅시다.
+      </p>
+    </div>
+
+    <!-- 도입 -->
+    <div class="think-box">
+      <h3>오늘의 질문</h3>
+      <p>
+        AI가 그림을 그리고, 음악을 만들고, 글을 쓰는 시대예요.<br>
+        자동차도 스스로 운전하기 시작했어요.<br>
+        우리가 어른이 될 즈음에는 <strong style="color:var(--gold);">어떤 직업이 사라지고, 어떤 직업이 새로 생길까요?</strong><br>
+        직업의 변화를 상상하며 미래를 그려봅시다.
+      </p>
+    </div>
+
+    <!-- AI 도구 안내 -->
+    <div class="ai-info-box">
+      <h4>🎨 생성형 AI로 미래 직업 이미지 만들기</h4>
+      <p style="font-size:0.9rem;color:var(--ink-soft);margin-bottom:10px;">
+        직업의 모습을 잘 보여주는 이미지를 AI로 만들어 봅시다. 만든 이미지에 <strong>오른쪽 클릭 → 이미지 주소 복사</strong> 후 입력칸에 붙여넣어요.
+      </p>
+      <div>
+        <a href="https://www.bing.com/images/create" target="_blank" rel="noopener">Bing Image Creator</a>
+        <a href="https://copilot.microsoft.com/" target="_blank" rel="noopener">Microsoft Copilot</a>
+        <a href="https://firefly.adobe.com/" target="_blank" rel="noopener">Adobe Firefly</a>
+        <a href="https://askup.tistory.com/" target="_blank" rel="noopener">AskUp (카카오톡)</a>
+      </div>
+      <p style="font-size:0.82rem;color:var(--ink-muted);margin-top:10px;">
+        💡 프롬프트 예시: "10년 후 미래의 도시에서 일하는 로봇 정비사, 동화풍 일러스트"<br>
+        💡 이미지가 어려우면 비워두어도 괜찮아요. 글로 충분히 표현할 수 있어요!
+      </p>
+    </div>
+
+    <!-- 학습지 제목 -->
+    <div class="worksheet-title">
+      <span class="name-slot" id="title-name">학생이름</span>의 미래 직업 세계 탐구
+    </div>
+
+    <!-- 활동 1: 사라질 직업 -->
+    <div class="activity-section act-disappearing">
+      <div class="activity-header">
+        <div class="activity-badge">📉</div>
+        <div>
+          <div class="activity-title">앞으로 사라질 것 같은 직업</div>
+          <div class="activity-sub">왜 사라질 것 같은지 이유와 함께 적어요. (예: 자동화, AI 대체)</div>
+        </div>
+      </div>
+      <div class="add-form" data-section="disappearing">
+        <input type="text" name="jobName" placeholder="직업 이름 (예: 은행 창구 직원)" maxlength="30">
+        <textarea name="reason" placeholder="왜 사라질 것 같나요? (예: 인터넷 뱅킹과 AI 상담사가 그 일을 대신할 수 있어서)" maxlength="200"></textarea>
+        <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
+        <div class="form-action"><button type="button" data-add="disappearing">+ 추가</button></div>
+      </div>
+      <div class="card-grid" data-list="disappearing">
+        <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
+      </div>
+    </div>
+
+    <!-- 활동 2: 남을 직업 -->
+    <div class="activity-section act-remaining">
+      <div class="activity-header">
+        <div class="activity-badge">🌳</div>
+        <div>
+          <div class="activity-title">미래에도 있을 것 같은 직업</div>
+          <div class="activity-sub">왜 남아 있을 것 같은지 이유와 함께 적어요. (사람의 마음·창의성·돌봄이 필요한 일)</div>
+        </div>
+      </div>
+      <div class="add-form" data-section="remaining">
+        <input type="text" name="jobName" placeholder="직업 이름 (예: 상담사)" maxlength="30">
+        <textarea name="reason" placeholder="왜 남아 있을 것 같나요? (예: 사람의 마음을 깊이 이해하는 일은 AI가 대신하기 어려워서)" maxlength="200"></textarea>
+        <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
+        <div class="form-action"><button type="button" data-add="remaining">+ 추가</button></div>
+      </div>
+      <div class="card-grid" data-list="remaining">
+        <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
+      </div>
+    </div>
+
+    <!-- 활동 3: 생길 직업 -->
+    <div class="activity-section act-emerging">
+      <div class="activity-header">
+        <div class="activity-badge">🚀</div>
+        <div>
+          <div class="activity-title">미래에 새로 생길 것 같은 직업</div>
+          <div class="activity-sub">상상력을 발휘해 새로운 직업을 만들어요. 이름·하는 일·왜 필요한지 적어요.</div>
+        </div>
+      </div>
+      <div class="add-form" data-section="emerging">
+        <input type="text" name="jobName" placeholder="직업 이름 (예: 우주여행 가이드, AI 윤리 검사관)" maxlength="40">
+        <textarea name="work" placeholder="어떤 일을 하나요? (예: 화성 여행자에게 안전과 즐길거리를 안내해요)" maxlength="200"></textarea>
+        <textarea name="reason" placeholder="왜 필요한 직업이 될까요?" maxlength="200"></textarea>
+        <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
+        <div class="form-action"><button type="button" data-add="emerging">+ 추가</button></div>
+      </div>
+      <div class="card-grid" data-list="emerging">
+        <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
+      </div>
+    </div>
+
+    <!-- 저장 -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;margin-bottom:40px;">
+      <button id="save-btn" class="btn btn-primary">💾 저장하기 (학급 보드에 공유)</button>
+    </div>
+
+    <!-- 학급 통합 3분면 보드 -->
+    <div class="class-board-section">
+      <h2>🤝 우리 반의 미래 직업 세계</h2>
+      <p class="lead">같은 학급 친구들이 적은 내용이 카테고리별로 모여요. 어떤 패턴이 보이나요?</p>
+      <p class="student-count" id="student-count">👥 0명의 친구가 참여 중</p>
+
+      <div class="three-column">
+        <div class="column col-disappearing">
+          <h3>📉 사라질 직업 <span class="count-badge" id="count-disappearing">0</span></h3>
+          <div class="aggregated-list" id="agg-disappearing">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+        <div class="column col-remaining">
+          <h3>🌳 남을 직업 <span class="count-badge" id="count-remaining">0</span></h3>
+          <div class="aggregated-list" id="agg-remaining">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+        <div class="column col-emerging">
+          <h3>🚀 새로 생길 직업 <span class="count-badge" id="count-emerging">0</span></h3>
+          <div class="aggregated-list" id="agg-emerging">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공통점 찾기 섹션 -->
+    <div class="common-section">
+      <h2>미래에 있을 것 같은 직업들의 공통적인 특징</h2>
+      <p class="lead">
+        위에서 친구들이 적은 <strong>'🌳 남을 직업'</strong>과 <strong>'🚀 새로 생길 직업'</strong>들을 살펴보세요.<br>
+        어떤 공통점이 있나요? 왜 미래에도 살아남거나 새로 생길까요? 자유롭게 적어봅시다.
+      </p>
+      <textarea id="common-features" class="common-input"
+        placeholder="예: 사람의 마음을 다루거나, 창의성이 필요하거나, 새로운 것을 만들어내는 일들이 많이 보여요. AI나 로봇이 대신하기 어려운 '사람만 할 수 있는 일'이 미래에도 남는 것 같아요."
+        maxlength="500"></textarea>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        <button id="save-features-btn" class="btn btn-primary btn-sm">💾 공통점 저장하기</button>
+        <a href="lesson4.html" class="btn btn-gold">4차시로 →</a>
+      </div>
+
+      <!-- 친구들의 공통점 -->
+      <div class="friends-features">
+        <h3>👀 친구들이 발견한 공통점</h3>
+        <div class="features-grid" id="friends-features-list">
+          <p class="empty-msg" style="grid-column:1/-1;">아직 친구들의 공통점이 없어요.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container"><p>상상하라! 나의 미래 · 3차시 변화하는 직업 세계</p></div>
+  </footer>
+
+  <script type="module">
+    import { requireAuth, toast, highlightNav, escapeHtml } from './js/auth.js';
+    import {
+      db, doc, setDoc, getDoc, collection, query, where, onSnapshot,
+      serverTimestamp
+    } from './js/firebase-config.js';
+
+    highlightNav('l3');
+    let currentUser = null;
+    let myData = { disappearing: [], remaining: [], emerging: [], commonFeatures: '' };
+    let unsubBoard = null;
+
+    requireAuth(async (user) => {
+      currentUser = user;
+      document.getElementById('title-name').textContent = user.name;
+
+      // 기존 데이터 불러오기
+      try {
+        const snap = await getDoc(doc(db, 'lesson3_future_jobs', user.userId));
+        if (snap.exists()) {
+          const d = snap.data();
+          myData.disappearing = d.disappearing || [];
+          myData.remaining = d.remaining || [];
+          myData.emerging = d.emerging || [];
+          myData.commonFeatures = d.commonFeatures || '';
+          renderAll();
+          document.getElementById('common-features').value = myData.commonFeatures;
+          if (myData.disappearing.length > 0 || myData.remaining.length > 0 ||
+              myData.emerging.length > 0 || myData.commonFeatures) {
+            toast('이전에 작성한 내용을 불러왔어요.');
+          }
+        }
+      } catch (e) { console.warn(e); }
+
+      subscribeBoard();
+    });
+
+    // ============ 카드 추가 ============
+    document.querySelectorAll('button[data-add]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.dataset.add;
+        const form = btn.closest('.add-form');
+        const jobName = form.querySelector('input[name="jobName"]').value.trim();
+        const reason = form.querySelector('textarea[name="reason"]').value.trim();
+        const imageUrl = form.querySelector('input[name="imageUrl"]').value.trim();
+        const work = form.querySelector('textarea[name="work"]')?.value.trim() || '';
+
+        if (!jobName) { toast('직업 이름을 입력해주세요.'); return; }
+        if (!reason) { toast('이유를 적어주세요.'); return; }
+
+        const item = { jobName, reason, imageUrl };
+        if (section === 'emerging') item.work = work;
+        myData[section].push(item);
+
+        form.querySelectorAll('input, textarea').forEach(el => el.value = '');
+        renderAll();
+        toast('추가되었어요!');
+      });
+    });
+
+    function renderAll() {
+      ['disappearing', 'remaining', 'emerging'].forEach(renderList);
+    }
+
+    function renderList(section) {
+      const container = document.querySelector(`[data-list="${section}"]`);
+      const items = myData[section] || [];
+      if (items.length === 0) {
+        container.innerHTML = '<div class="empty-msg" style="grid-column:1/-1;">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>';
+        return;
+      }
+      container.innerHTML = items.map((item, idx) => `
+        <div class="item-card">
+          <button class="item-delete" data-section="${section}" data-idx="${idx}">×</button>
+          ${item.imageUrl
+            ? `<img src="${escapeHtml(item.imageUrl)}" class="item-img" onerror="this.outerHTML='<div class=\\'img-placeholder\\'>🖼️</div>'" alt="">`
+            : `<div class="img-placeholder">${section === 'disappearing' ? '📉' : section === 'remaining' ? '🌳' : '🚀'}</div>`
+          }
+          <div class="item-name">${escapeHtml(item.jobName)}</div>
+          ${item.work ? `<div class="item-work">📌 ${escapeHtml(item.work)}</div>` : ''}
+          <div class="item-reason">${escapeHtml(item.reason)}</div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.item-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const s = btn.dataset.section;
+          const i = parseInt(btn.dataset.idx);
+          if (!confirm('이 직업을 삭제할까요?')) return;
+          myData[s].splice(i, 1);
+          renderAll();
+        });
+      });
+    }
+
+    // ============ 저장 (카드들) ============
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const total = myData.disappearing.length + myData.remaining.length + myData.emerging.length;
+      if (total === 0) { toast('적어도 한 개 이상의 직업을 추가해주세요.'); return; }
+      try {
+        await setDoc(doc(db, 'lesson3_future_jobs', currentUser.userId), {
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          classCode: currentUser.classCode,
+          disappearing: myData.disappearing,
+          remaining: myData.remaining,
+          emerging: myData.emerging,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast('학급 보드에 공유되었어요! 🎉');
+      } catch (e) {
+        console.error(e);
+        toast('저장 실패. Firebase 설정을 확인해주세요.');
+      }
+    });
+
+    // ============ 공통점 저장 ============
+    document.getElementById('save-features-btn').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const features = document.getElementById('common-features').value.trim();
+      if (!features) { toast('공통점을 적어주세요!'); return; }
+      myData.commonFeatures = features;
+      try {
+        await setDoc(doc(db, 'lesson3_future_jobs', currentUser.userId), {
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          classCode: currentUser.classCode,
+          commonFeatures: features,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast('공통점이 저장되었어요! 친구들과 공유돼요 💡');
+      } catch (e) {
+        console.error(e);
+        toast('저장 실패. Firebase 설정을 확인해주세요.');
+      }
+    });
+
+    // ============ 학급 보드 실시간 구독 ============
+    function subscribeBoard() {
+      if (unsubBoard) unsubBoard();
+      const q = query(
+        collection(db, 'lesson3_future_jobs'),
+        where('classCode', '==', currentUser.classCode)
+      );
+      unsubBoard = onSnapshot(q, (snap) => {
+        const items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        render3Columns(items);
+        renderFeatures(items);
+      }, (err) => {
+        console.error(err);
+      });
+    }
+
+    // ============ 3분면 통합 보드 ============
+    function render3Columns(items) {
+      // 카테고리별로 모든 학생의 항목 모으기
+      const aggregated = { disappearing: [], remaining: [], emerging: [] };
+      let participating = 0;
+
+      items.forEach(student => {
+        let hasAny = false;
+        ['disappearing', 'remaining', 'emerging'].forEach(cat => {
+          (student[cat] || []).forEach(item => {
+            aggregated[cat].push({
+              ...item,
+              userName: student.userName,
+              userId: student.userId,
+              isMine: student.userId === currentUser.userId
+            });
+            hasAny = true;
+          });
+        });
+        if (hasAny) participating++;
+      });
+
+      document.getElementById('student-count').textContent = `👥 ${participating}명의 친구가 참여 중`;
+
+      ['disappearing', 'remaining', 'emerging'].forEach(cat => {
+        const container = document.getElementById(`agg-${cat}`);
+        const countBadge = document.getElementById(`count-${cat}`);
+        const list = aggregated[cat];
+        countBadge.textContent = list.length;
+
+        if (list.length === 0) {
+          container.innerHTML = '<div class="empty-msg">아직 비어 있어요.</div>';
+          return;
+        }
+
+        // 내가 적은 것이 위로 오도록 정렬
+        list.sort((a, b) => (b.isMine ? 1 : 0) - (a.isMine ? 1 : 0));
+
+        const icon = cat === 'disappearing' ? '📉' : cat === 'remaining' ? '🌳' : '🚀';
+        container.innerHTML = list.map(item => `
+          <div class="agg-item ${item.isMine ? 'mine' : ''}">
+            ${item.imageUrl
+              ? `<img src="${escapeHtml(item.imageUrl)}" class="agg-img" onerror="this.style.display='none'" alt="">`
+              : ''}
+            <div class="agg-name">${escapeHtml(item.jobName)}</div>
+            ${item.work ? `<div class="agg-work">📌 ${escapeHtml(item.work)}</div>` : ''}
+            <div class="agg-reason">${escapeHtml(item.reason)}</div>
+            <div class="agg-author">${item.isMine ? '✨ 나' : escapeHtml(item.userName)}</div>
+          </div>
+        `).join('');
+      });
+    }
+
+    // ============ 친구들의 공통점 표시 ============
+    function renderFeatures(items) {
+      const container = document.getElementById('friends-features-list');
+      const withFeatures = items.filter(item =>
+        item.commonFeatures && item.commonFeatures.trim() && item.userId !== currentUser.userId
+      );
+
+      if (withFeatures.length === 0) {
+        container.innerHTML = '<p class="empty-msg" style="grid-column:1/-1;">아직 친구들이 공통점을 적지 않았어요.</p>';
+        return;
+      }
+
+      // 최신순
+      withFeatures.sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0));
+
+      container.innerHTML = withFeatures.map(item => `
+        <div class="feature-card">
+          <div class="friend-name">💡 ${escapeHtml(item.userName)}</div>
+          <div class="content">${escapeHtml(item.commonFeatures)}</div>
+        </div>
+      `).join('');
+    }
+
+    window.addEventListener('beforeunload', () => { if (unsubBoard) unsubBoard(); });
+  </script>
+</body>
+</html>
