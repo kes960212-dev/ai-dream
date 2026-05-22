@@ -50,8 +50,6 @@
       margin-bottom: 28px;
     }
     .ai-info-box h4 { color: var(--plum); margin-bottom: 10px; font-family: var(--font-display); font-size: 1.05rem; }
-    .ai-info-box ul { padding-left: 22px; line-height: 1.7; font-size: 0.92rem; }
-    .ai-info-box ul li { margin-bottom: 6px; }
     .ai-info-box a {
       display: inline-block;
       margin: 4px 6px 4px 0;
@@ -100,8 +98,6 @@
       font-size: 0.88rem;
       color: var(--ink-muted);
     }
-
-    /* 활동별 색상 */
     .act-disappearing .activity-badge { background: #FDE5E0; }
     .act-disappearing .activity-title { color: var(--coral-deep); }
     .act-remaining .activity-badge { background: #E7F4E5; }
@@ -109,7 +105,6 @@
     .act-emerging .activity-badge { background: #FFF2C7; }
     .act-emerging .activity-title { color: var(--gold-deep); }
 
-    /* 카드 추가 폼 */
     .add-form {
       background: rgba(0,0,0,0.025);
       border: 1.5px dashed var(--line);
@@ -128,11 +123,7 @@
     }
     .add-form input:focus, .add-form textarea:focus { outline: none; border-color: var(--ink); }
     .add-form textarea { min-height: 60px; resize: vertical; }
-    .add-form .form-action {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-    }
+    .add-form .form-action { display: flex; justify-content: flex-end; gap: 8px; }
     .add-form button {
       padding: 7px 14px;
       background: var(--ink);
@@ -145,7 +136,6 @@
       font-size: 0.88rem;
     }
 
-    /* 카드 목록 */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -160,179 +150,244 @@
       position: relative;
     }
     .item-card .item-img {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      background: var(--mist);
-      border-radius: var(--r-sm);
-      margin-bottom: 8px;
+      width: 100%; aspect-ratio: 1/1; object-fit: cover;
+      background: var(--mist); border-radius: var(--r-sm); margin-bottom: 8px;
     }
     .item-card .img-placeholder {
-      width: 100%;
-      aspect-ratio: 1/1;
+      width: 100%; aspect-ratio: 1/1;
       background: linear-gradient(135deg, rgba(107,91,149,0.15), rgba(127,183,190,0.1));
-      border-radius: var(--r-sm);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: var(--ink-muted);
+      border-radius: var(--r-sm); margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; color: var(--ink-muted);
     }
     .item-card .item-name {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      margin-bottom: 4px;
-      color: var(--ink);
+      font-family: var(--font-display); font-size: 1rem; margin-bottom: 4px;
     }
     .item-card .item-work {
-      font-size: 0.82rem;
-      color: var(--ink-soft);
-      margin-bottom: 4px;
-      font-weight: 700;
+      font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 4px; font-weight: 700;
     }
     .item-card .item-reason {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      line-height: 1.5;
-      white-space: pre-wrap;
+      font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; white-space: pre-wrap;
     }
     .item-card .item-delete {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: rgba(27,40,69,0.85);
-      color: var(--gold);
-      border: none;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 0.9rem;
-      line-height: 1;
-      padding: 0;
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(27,40,69,0.85); color: var(--gold);
+      border: none; width: 24px; height: 24px; border-radius: 50%;
+      cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0;
     }
     .item-card .item-delete:hover { background: var(--coral); color: white; }
 
     .empty-msg {
-      text-align: center;
-      padding: 20px;
-      color: var(--ink-muted);
-      font-size: 0.9rem;
-      background: var(--bg);
-      border-radius: var(--r-md);
+      text-align: center; padding: 20px;
+      color: var(--ink-muted); font-size: 0.9rem;
+      background: var(--bg); border-radius: var(--r-md);
       border: 1.5px dashed var(--line);
     }
 
-    /* 친구 보드 */
-    .board-section {
-      background: linear-gradient(135deg, rgba(127,183,190,0.1), rgba(255,255,255,0.5));
+    /* ===== 학급 통합 3분면 보드 ===== */
+    .class-board-section {
+      background: linear-gradient(180deg, rgba(27,40,69,0.04), rgba(27,40,69,0.01));
       border: 2px solid var(--ink);
       border-radius: var(--r-lg);
-      padding: 24px;
+      padding: 28px;
       box-shadow: var(--shadow-card);
+      margin-bottom: 28px;
     }
-    .friend-board {
+    .class-board-section h2 { margin-bottom: 6px; }
+    .class-board-section .lead {
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    .class-board-section .student-count {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .three-column {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
-      margin-top: 14px;
+      margin-bottom: 20px;
     }
-    .friend-post {
+    @media (max-width: 900px) { .three-column { grid-template-columns: 1fr; } }
+
+    .column {
+      background: var(--bg-elevated);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--r-md);
+      padding: 18px;
+      min-height: 350px;
+      max-height: 700px;
+      overflow-y: auto;
+      box-shadow: 4px 4px 0 0 var(--ink);
+    }
+    .column.col-disappearing {
+      background: linear-gradient(180deg, #FDE5E0 0%, #FFFDF8 30%);
+    }
+    .column.col-remaining {
+      background: linear-gradient(180deg, #E7F4E5 0%, #FFFDF8 30%);
+    }
+    .column.col-emerging {
+      background: linear-gradient(180deg, #FFF2C7 0%, #FFFDF8 30%);
+    }
+    .column h3 {
+      text-align: center;
+      font-family: var(--font-display);
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed var(--ink);
+      font-size: 1.1rem;
+      position: sticky;
+      top: -18px;
+      background: inherit;
+      z-index: 1;
+      margin: -18px -18px 12px;
+      padding: 18px 18px 10px;
+    }
+    .column .count-badge {
+      display: inline-block;
+      background: var(--ink);
+      color: var(--gold);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+    .col-disappearing h3 { color: var(--coral-deep); }
+    .col-remaining h3 { color: #4A7A3C; }
+    .col-emerging h3 { color: var(--gold-deep); }
+
+    .aggregated-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .agg-item {
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      box-shadow: 2px 2px 0 0 var(--ink);
+    }
+    .agg-item.mine { border-color: var(--coral); box-shadow: 2px 2px 0 0 var(--coral); }
+    .agg-item .agg-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-radius: var(--r-sm);
+      margin-bottom: 8px;
+      background: var(--mist);
+    }
+    .agg-item .agg-name {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .agg-item .agg-work {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .agg-item .agg-reason {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-bottom: 6px;
+      white-space: pre-wrap;
+    }
+    .agg-item .agg-author {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      font-weight: 700;
+      text-align: right;
+      border-top: 1px dashed var(--line);
+      padding-top: 4px;
+    }
+    .agg-item.mine .agg-author { color: var(--coral); }
+
+    /* ===== 공통점 찾기 섹션 ===== */
+    .common-section {
+      background: linear-gradient(135deg, #FFF2C7 0%, #FDE5E0 100%);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .common-section::before {
+      content: '💡';
+      position: absolute;
+      top: -22px; left: 22px;
+      font-size: 2rem;
+      background: var(--bg);
+      padding: 4px 10px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+    }
+    .common-section h2 {
+      margin-bottom: 8px;
+      padding-top: 8px;
+    }
+    .common-section .lead {
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .common-input {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      border-radius: var(--r-md);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      background: white;
+      resize: vertical;
+    }
+    .common-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(233,180,76,0.3); }
+
+    .friends-features {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 2px dashed var(--ink);
+    }
+    .friends-features h3 {
+      margin-bottom: 12px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .feature-card {
       background: var(--bg-elevated);
       border: 2px solid var(--ink);
       border-radius: var(--r-md);
-      padding: 16px;
-      box-shadow: 3px 3px 0 0 var(--ink);
+      padding: 14px;
+      box-shadow: 2px 2px 0 0 var(--ink);
     }
-    .friend-post .friend-name {
+    .feature-card .friend-name {
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--coral-deep);
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1.5px dashed var(--line);
-    }
-    .friend-post .section-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--ink-muted);
-      margin-top: 8px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .friend-post .mini-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
       margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--line);
     }
-    .friend-post .mini-chip {
-      padding: 3px 9px;
-      background: var(--bg);
-      border-radius: 999px;
-      font-size: 0.78rem;
-      border: 1px solid var(--line);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .friend-post .mini-chip img {
-      width: 18px; height: 18px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .friend-post .post-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      padding-top: 8px;
-      border-top: 1.5px dashed var(--line);
-      font-size: 0.85rem;
-    }
-    .friend-post .post-actions button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 6px;
-      font-family: var(--font-body);
+    .feature-card .content {
+      font-size: 0.9rem;
       color: var(--ink-soft);
-      border-radius: var(--r-sm);
-    }
-    .friend-post .post-actions button:hover { background: var(--line); }
-    .friend-post .post-actions .liked { color: var(--coral); font-weight: 700; }
-
-    .comments {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1.5px dashed var(--line);
-    }
-    .comment {
-      font-size: 0.82rem;
-      color: var(--ink-soft);
-      padding: 3px 0;
-    }
-    .comment strong { color: var(--ink); font-size: 0.78rem; }
-    .comment-input { display: flex; gap: 4px; margin-top: 6px; }
-    .comment-input input {
-      flex: 1;
-      padding: 5px 8px;
-      font-size: 0.82rem;
-      border: 1.5px solid var(--line);
-      border-radius: var(--r-sm);
-      font-family: var(--font-body);
-    }
-    .comment-input input:focus { outline: none; border-color: var(--ink); }
-    .comment-input button {
-      padding: 5px 10px;
-      background: var(--ink);
-      color: var(--gold);
-      border: none;
-      border-radius: var(--r-sm);
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.82rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -360,7 +415,7 @@
       <h1>변화하는 직업 세계 탐구</h1>
       <p class="subtitle">
         <span class="stage-tag" style="background:var(--gold);color:var(--ink);">핵심 파악하기</span>
-        세상이 빠르게 변하면서 직업의 모습도 달라지고 있어요. 사라질 직업, 남을 직업, 새로 생길 직업을 함께 상상해봅시다.
+        세상이 빠르게 변하면서 직업의 모습도 달라지고 있어요. 사라질 직업, 남을 직업, 새로 생길 직업을 상상하며 공통점을 찾아봅시다.
       </p>
     </div>
 
@@ -379,8 +434,7 @@
     <div class="ai-info-box">
       <h4>🎨 생성형 AI로 미래 직업 이미지 만들기</h4>
       <p style="font-size:0.9rem;color:var(--ink-soft);margin-bottom:10px;">
-        직업의 모습을 잘 보여주는 이미지를 생성형 AI로 만들어 봅시다. AI 도구에서 이미지를 만든 뒤,
-        해당 이미지에 <strong>마우스 오른쪽 클릭 → 이미지 주소 복사</strong>를 한 다음, 아래 입력칸에 붙여넣어요.
+        직업의 모습을 잘 보여주는 이미지를 AI로 만들어 봅시다. 만든 이미지에 <strong>오른쪽 클릭 → 이미지 주소 복사</strong> 후 입력칸에 붙여넣어요.
       </p>
       <div>
         <a href="https://www.bing.com/images/create" target="_blank" rel="noopener">Bing Image Creator</a>
@@ -390,7 +444,7 @@
       </div>
       <p style="font-size:0.82rem;color:var(--ink-muted);margin-top:10px;">
         💡 프롬프트 예시: "10년 후 미래의 도시에서 일하는 로봇 정비사, 동화풍 일러스트"<br>
-        💡 이미지 만들기가 어려우면 비워두어도 괜찮아요. 글로 충분히 표현할 수 있어요!
+        💡 이미지가 어려우면 비워두어도 괜찮아요. 글로 충분히 표현할 수 있어요!
       </p>
     </div>
 
@@ -405,19 +459,15 @@
         <div class="activity-badge">📉</div>
         <div>
           <div class="activity-title">앞으로 사라질 것 같은 직업</div>
-          <div class="activity-sub">왜 사라질 것 같은지 이유와 함께 적어요. (예: 자동화, AI 대체, 기술 변화)</div>
+          <div class="activity-sub">왜 사라질 것 같은지 이유와 함께 적어요. (예: 자동화, AI 대체)</div>
         </div>
       </div>
-
       <div class="add-form" data-section="disappearing">
         <input type="text" name="jobName" placeholder="직업 이름 (예: 은행 창구 직원)" maxlength="30">
         <textarea name="reason" placeholder="왜 사라질 것 같나요? (예: 인터넷 뱅킹과 AI 상담사가 그 일을 대신할 수 있어서)" maxlength="200"></textarea>
-        <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택) — 생성형 AI로 만든 이미지 주소">
-        <div class="form-action">
-          <button type="button" data-add="disappearing">+ 추가</button>
-        </div>
+        <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
+        <div class="form-action"><button type="button" data-add="disappearing">+ 추가</button></div>
       </div>
-
       <div class="card-grid" data-list="disappearing">
         <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
       </div>
@@ -429,19 +479,15 @@
         <div class="activity-badge">🌳</div>
         <div>
           <div class="activity-title">미래에도 있을 것 같은 직업</div>
-          <div class="activity-sub">왜 남아 있을 것 같은지 이유와 함께 적어요. (예: 사람의 마음·창의성·돌봄이 필요한 일)</div>
+          <div class="activity-sub">왜 남아 있을 것 같은지 이유와 함께 적어요. (사람의 마음·창의성·돌봄이 필요한 일)</div>
         </div>
       </div>
-
       <div class="add-form" data-section="remaining">
         <input type="text" name="jobName" placeholder="직업 이름 (예: 상담사)" maxlength="30">
         <textarea name="reason" placeholder="왜 남아 있을 것 같나요? (예: 사람의 마음을 깊이 이해하는 일은 AI가 대신하기 어려워서)" maxlength="200"></textarea>
         <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
-        <div class="form-action">
-          <button type="button" data-add="remaining">+ 추가</button>
-        </div>
+        <div class="form-action"><button type="button" data-add="remaining">+ 추가</button></div>
       </div>
-
       <div class="card-grid" data-list="remaining">
         <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
       </div>
@@ -456,17 +502,13 @@
           <div class="activity-sub">상상력을 발휘해 새로운 직업을 만들어요. 이름·하는 일·왜 필요한지 적어요.</div>
         </div>
       </div>
-
       <div class="add-form" data-section="emerging">
         <input type="text" name="jobName" placeholder="직업 이름 (예: 우주여행 가이드, AI 윤리 검사관)" maxlength="40">
-        <textarea name="work" placeholder="어떤 일을 하나요? (예: 화성 여행을 떠나는 사람들에게 안전과 즐길 거리를 안내해요)" maxlength="200"></textarea>
-        <textarea name="reason" placeholder="왜 필요한 직업이 될까요? (예: 우주여행이 보편화되면서 안전한 여행 안내가 꼭 필요해질 거예요)" maxlength="200"></textarea>
+        <textarea name="work" placeholder="어떤 일을 하나요? (예: 화성 여행자에게 안전과 즐길거리를 안내해요)" maxlength="200"></textarea>
+        <textarea name="reason" placeholder="왜 필요한 직업이 될까요?" maxlength="200"></textarea>
         <input type="url" name="imageUrl" placeholder="AI 이미지 URL (선택)">
-        <div class="form-action">
-          <button type="button" data-add="emerging">+ 추가</button>
-        </div>
+        <div class="form-action"><button type="button" data-add="emerging">+ 추가</button></div>
       </div>
-
       <div class="card-grid" data-list="emerging">
         <div class="empty-msg">아직 추가된 직업이 없어요. 위에서 추가해보세요!</div>
       </div>
@@ -474,16 +516,58 @@
 
     <!-- 저장 -->
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;margin-bottom:40px;">
-      <button id="save-btn" class="btn btn-primary">💾 저장하기 (보드에 공유)</button>
-      <a href="lesson4.html" class="btn btn-gold">4차시로 →</a>
+      <button id="save-btn" class="btn btn-primary">💾 저장하기 (학급 보드에 공유)</button>
     </div>
 
-    <!-- 친구들의 미래 직업 보드 -->
-    <div class="board-section">
-      <h2 style="margin-bottom:6px;">🤝 친구들이 상상한 미래 직업 세계</h2>
-      <p class="text-muted">같은 학급 친구들의 생각을 둘러보세요. 새로운 관점을 발견할 수 있어요!</p>
-      <div class="friend-board" id="friend-board">
-        <div class="loading" style="grid-column:1/-1;"><div class="spinner"></div><p>친구들의 작품을 불러오는 중...</p></div>
+    <!-- 학급 통합 3분면 보드 -->
+    <div class="class-board-section">
+      <h2>🤝 우리 반의 미래 직업 세계</h2>
+      <p class="lead">같은 학급 친구들이 적은 내용이 카테고리별로 모여요. 어떤 패턴이 보이나요?</p>
+      <p class="student-count" id="student-count">👥 0명의 친구가 참여 중</p>
+
+      <div class="three-column">
+        <div class="column col-disappearing">
+          <h3>📉 사라질 직업 <span class="count-badge" id="count-disappearing">0</span></h3>
+          <div class="aggregated-list" id="agg-disappearing">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+        <div class="column col-remaining">
+          <h3>🌳 남을 직업 <span class="count-badge" id="count-remaining">0</span></h3>
+          <div class="aggregated-list" id="agg-remaining">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+        <div class="column col-emerging">
+          <h3>🚀 새로 생길 직업 <span class="count-badge" id="count-emerging">0</span></h3>
+          <div class="aggregated-list" id="agg-emerging">
+            <div class="empty-msg">아직 비어 있어요.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공통점 찾기 섹션 -->
+    <div class="common-section">
+      <h2>미래에 있을 것 같은 직업들의 공통적인 특징</h2>
+      <p class="lead">
+        위에서 친구들이 적은 <strong>'🌳 남을 직업'</strong>과 <strong>'🚀 새로 생길 직업'</strong>들을 살펴보세요.<br>
+        어떤 공통점이 있나요? 왜 미래에도 살아남거나 새로 생길까요? 자유롭게 적어봅시다.
+      </p>
+      <textarea id="common-features" class="common-input"
+        placeholder="예: 사람의 마음을 다루거나, 창의성이 필요하거나, 새로운 것을 만들어내는 일들이 많이 보여요. AI나 로봇이 대신하기 어려운 '사람만 할 수 있는 일'이 미래에도 남는 것 같아요."
+        maxlength="500"></textarea>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        <button id="save-features-btn" class="btn btn-primary btn-sm">💾 공통점 저장하기</button>
+        <a href="lesson4.html" class="btn btn-gold">4차시로 →</a>
+      </div>
+
+      <!-- 친구들의 공통점 -->
+      <div class="friends-features">
+        <h3>👀 친구들이 발견한 공통점</h3>
+        <div class="features-grid" id="friends-features-list">
+          <p class="empty-msg" style="grid-column:1/-1;">아직 친구들의 공통점이 없어요.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -493,15 +577,15 @@
   </footer>
 
   <script type="module">
-    import { requireAuth, toast, highlightNav, escapeHtml, timeAgo } from './js/auth.js';
+    import { requireAuth, toast, highlightNav, escapeHtml } from './js/auth.js';
     import {
       db, doc, setDoc, getDoc, collection, query, where, onSnapshot,
-      updateDoc, arrayUnion, arrayRemove, serverTimestamp
+      serverTimestamp
     } from './js/firebase-config.js';
 
     highlightNav('l3');
     let currentUser = null;
-    let myData = { disappearing: [], remaining: [], emerging: [] };
+    let myData = { disappearing: [], remaining: [], emerging: [], commonFeatures: '' };
     let unsubBoard = null;
 
     requireAuth(async (user) => {
@@ -516,15 +600,20 @@
           myData.disappearing = d.disappearing || [];
           myData.remaining = d.remaining || [];
           myData.emerging = d.emerging || [];
+          myData.commonFeatures = d.commonFeatures || '';
           renderAll();
-          toast('이전에 작성한 내용을 불러왔어요.');
+          document.getElementById('common-features').value = myData.commonFeatures;
+          if (myData.disappearing.length > 0 || myData.remaining.length > 0 ||
+              myData.emerging.length > 0 || myData.commonFeatures) {
+            toast('이전에 작성한 내용을 불러왔어요.');
+          }
         }
       } catch (e) { console.warn(e); }
 
       subscribeBoard();
     });
 
-    // 카드 추가
+    // ============ 카드 추가 ============
     document.querySelectorAll('button[data-add]').forEach(btn => {
       btn.addEventListener('click', () => {
         const section = btn.dataset.add;
@@ -541,7 +630,6 @@
         if (section === 'emerging') item.work = work;
         myData[section].push(item);
 
-        // 입력 초기화
         form.querySelectorAll('input, textarea').forEach(el => el.value = '');
         renderAll();
         toast('추가되었어요!');
@@ -549,9 +637,7 @@
     });
 
     function renderAll() {
-      renderList('disappearing');
-      renderList('remaining');
-      renderList('emerging');
+      ['disappearing', 'remaining', 'emerging'].forEach(renderList);
     }
 
     function renderList(section) {
@@ -574,7 +660,6 @@
         </div>
       `).join('');
 
-      // 삭제 버튼
       container.querySelectorAll('.item-delete').forEach(btn => {
         btn.addEventListener('click', () => {
           const s = btn.dataset.section;
@@ -586,7 +671,7 @@
       });
     }
 
-    // 저장
+    // ============ 저장 (카드들) ============
     document.getElementById('save-btn').addEventListener('click', async () => {
       if (!currentUser) return;
       const total = myData.disappearing.length + myData.remaining.length + myData.emerging.length;
@@ -601,14 +686,35 @@
           emerging: myData.emerging,
           updatedAt: serverTimestamp()
         }, { merge: true });
-        toast('보드에 공유되었어요! 🎉');
+        toast('학급 보드에 공유되었어요! 🎉');
       } catch (e) {
         console.error(e);
         toast('저장 실패. Firebase 설정을 확인해주세요.');
       }
     });
 
-    // 친구 보드 실시간
+    // ============ 공통점 저장 ============
+    document.getElementById('save-features-btn').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const features = document.getElementById('common-features').value.trim();
+      if (!features) { toast('공통점을 적어주세요!'); return; }
+      myData.commonFeatures = features;
+      try {
+        await setDoc(doc(db, 'lesson3_future_jobs', currentUser.userId), {
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          classCode: currentUser.classCode,
+          commonFeatures: features,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        toast('공통점이 저장되었어요! 친구들과 공유돼요 💡');
+      } catch (e) {
+        console.error(e);
+        toast('저장 실패. Firebase 설정을 확인해주세요.');
+      }
+    });
+
+    // ============ 학급 보드 실시간 구독 ============
     function subscribeBoard() {
       if (unsubBoard) unsubBoard();
       const q = query(
@@ -618,109 +724,87 @@
       unsubBoard = onSnapshot(q, (snap) => {
         const items = [];
         snap.forEach(d => items.push({ id: d.id, ...d.data() }));
-        items.sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0));
-        renderBoard(items);
+        render3Columns(items);
+        renderFeatures(items);
       }, (err) => {
         console.error(err);
-        document.getElementById('friend-board').innerHTML =
-          '<p class="loading" style="grid-column:1/-1;">보드 불러오기 실패. Firebase 설정을 확인해주세요.</p>';
       });
     }
 
-    function renderBoard(items) {
-      const board = document.getElementById('friend-board');
-      if (items.length === 0) {
-        board.innerHTML = '<p class="loading" style="grid-column:1/-1;">아직 공유된 작품이 없어요. 첫 작품의 주인공이 되어주세요! ✨</p>';
+    // ============ 3분면 통합 보드 ============
+    function render3Columns(items) {
+      // 카테고리별로 모든 학생의 항목 모으기
+      const aggregated = { disappearing: [], remaining: [], emerging: [] };
+      let participating = 0;
+
+      items.forEach(student => {
+        let hasAny = false;
+        ['disappearing', 'remaining', 'emerging'].forEach(cat => {
+          (student[cat] || []).forEach(item => {
+            aggregated[cat].push({
+              ...item,
+              userName: student.userName,
+              userId: student.userId,
+              isMine: student.userId === currentUser.userId
+            });
+            hasAny = true;
+          });
+        });
+        if (hasAny) participating++;
+      });
+
+      document.getElementById('student-count').textContent = `👥 ${participating}명의 친구가 참여 중`;
+
+      ['disappearing', 'remaining', 'emerging'].forEach(cat => {
+        const container = document.getElementById(`agg-${cat}`);
+        const countBadge = document.getElementById(`count-${cat}`);
+        const list = aggregated[cat];
+        countBadge.textContent = list.length;
+
+        if (list.length === 0) {
+          container.innerHTML = '<div class="empty-msg">아직 비어 있어요.</div>';
+          return;
+        }
+
+        // 내가 적은 것이 위로 오도록 정렬
+        list.sort((a, b) => (b.isMine ? 1 : 0) - (a.isMine ? 1 : 0));
+
+        const icon = cat === 'disappearing' ? '📉' : cat === 'remaining' ? '🌳' : '🚀';
+        container.innerHTML = list.map(item => `
+          <div class="agg-item ${item.isMine ? 'mine' : ''}">
+            ${item.imageUrl
+              ? `<img src="${escapeHtml(item.imageUrl)}" class="agg-img" onerror="this.style.display='none'" alt="">`
+              : ''}
+            <div class="agg-name">${escapeHtml(item.jobName)}</div>
+            ${item.work ? `<div class="agg-work">📌 ${escapeHtml(item.work)}</div>` : ''}
+            <div class="agg-reason">${escapeHtml(item.reason)}</div>
+            <div class="agg-author">${item.isMine ? '✨ 나' : escapeHtml(item.userName)}</div>
+          </div>
+        `).join('');
+      });
+    }
+
+    // ============ 친구들의 공통점 표시 ============
+    function renderFeatures(items) {
+      const container = document.getElementById('friends-features-list');
+      const withFeatures = items.filter(item =>
+        item.commonFeatures && item.commonFeatures.trim() && item.userId !== currentUser.userId
+      );
+
+      if (withFeatures.length === 0) {
+        container.innerHTML = '<p class="empty-msg" style="grid-column:1/-1;">아직 친구들이 공통점을 적지 않았어요.</p>';
         return;
       }
-      board.innerHTML = items.map(p => {
-        const liked = (p.likes || []).includes(currentUser.userId);
-        return `
-          <div class="friend-post" data-id="${p.id}">
-            <div class="friend-name">${escapeHtml(p.userName)}의 상상</div>
 
-            ${renderMini('📉 사라질 직업', p.disappearing)}
-            ${renderMini('🌳 남을 직업', p.remaining)}
-            ${renderMini('🚀 새로 생길 직업', p.emerging)}
+      // 최신순
+      withFeatures.sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0));
 
-            <div class="post-actions">
-              <button class="like-btn ${liked ? 'liked' : ''}" data-id="${p.id}">${liked ? '❤️' : '🤍'} ${(p.likes || []).length}</button>
-              <button class="toggle-comments-btn" data-id="${p.id}">💬 ${(p.comments || []).length}</button>
-            </div>
-            <div class="comments hidden" id="comments-${p.id}">
-              ${(p.comments || []).map(c => `
-                <div class="comment"><strong>${escapeHtml(c.userName)}:</strong> ${escapeHtml(c.text)}</div>
-              `).join('')}
-              <div class="comment-input">
-                <input type="text" placeholder="응원 댓글 남기기..." maxlength="50">
-                <button type="button" class="add-comment-btn" data-id="${p.id}">전송</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      // 이벤트
-      board.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', () => toggleLike(btn.dataset.id));
-      });
-      board.querySelectorAll('.toggle-comments-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.getElementById('comments-' + btn.dataset.id).classList.toggle('hidden');
-        });
-      });
-      board.querySelectorAll('.add-comment-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const input = btn.previousElementSibling;
-          const text = input.value.trim();
-          if (!text) return;
-          addComment(btn.dataset.id, text);
-          input.value = '';
-        });
-      });
-      board.querySelectorAll('.comment-input input').forEach(input => {
-        input.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') { e.preventDefault(); input.nextElementSibling.click(); }
-        });
-      });
-    }
-
-    function renderMini(label, items) {
-      if (!items || items.length === 0) return '';
-      return `
-        <div class="section-label">${label}</div>
-        <div class="mini-items">
-          ${items.map(it => `
-            <span class="mini-chip" title="${escapeHtml(it.reason || '')}">
-              ${it.imageUrl ? `<img src="${escapeHtml(it.imageUrl)}" onerror="this.style.display='none'">` : ''}
-              ${escapeHtml(it.jobName)}
-            </span>
-          `).join('')}
+      container.innerHTML = withFeatures.map(item => `
+        <div class="feature-card">
+          <div class="friend-name">💡 ${escapeHtml(item.userName)}</div>
+          <div class="content">${escapeHtml(item.commonFeatures)}</div>
         </div>
-      `;
-    }
-
-    async function toggleLike(postId) {
-      try {
-        const snap = await getDoc(doc(db, 'lesson3_future_jobs', postId));
-        if (!snap.exists()) return;
-        const liked = (snap.data().likes || []).includes(currentUser.userId);
-        await updateDoc(doc(db, 'lesson3_future_jobs', postId), {
-          likes: liked ? arrayRemove(currentUser.userId) : arrayUnion(currentUser.userId)
-        });
-      } catch (e) { console.error(e); toast('좋아요 실패.'); }
-    }
-
-    async function addComment(postId, text) {
-      try {
-        await updateDoc(doc(db, 'lesson3_future_jobs', postId), {
-          comments: arrayUnion({
-            userId: currentUser.userId,
-            userName: currentUser.name,
-            text, createdAt: Date.now()
-          })
-        });
-      } catch (e) { console.error(e); toast('댓글 실패.'); }
+      `).join('');
     }
 
     window.addEventListener('beforeunload', () => { if (unsubBoard) unsubBoard(); });
