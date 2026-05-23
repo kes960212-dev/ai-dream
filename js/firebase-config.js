@@ -6,13 +6,15 @@
 // =====================================================
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDGyttH5qsKnh4cRNIdgcjYGqgypnVt2vQ",
+  authDomain: "ai-dream-69a9a.firebaseapp.com",
+  databaseURL: "https://ai-dream-69a9a-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ai-dream-69a9a",
+  storageBucket: "ai-dream-69a9a.firebasestorage.app",
+  messagingSenderId: "10542690995",
+  appId: "1:10542690995:web:32209cb5d576c65e28f6c6"
 };
+
 
 // 학급 코드 (선생님이 사전에 정하여 학생들에게 공유)
 // 예: "2026-6-1" → 2026년 6학년 1반
